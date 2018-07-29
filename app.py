@@ -32,7 +32,7 @@ def homepage():
     return """
     <h1>Hello Translator-Bot</h1>
     <img src="http://loremflickr.com/600/400">
-    """.format(time=the_time)
+    """
 
 @app.route("/callback", methods=['POST'])
 def callback():
