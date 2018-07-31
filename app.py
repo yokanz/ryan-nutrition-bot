@@ -72,7 +72,7 @@ def handle_text_message(event):
     
     if '=>bmr' in text.lower():
         body_weight = text.lower().split('=')[0]
-        simple_bmr = body_weight * 22
+        simple_bmr = int(float(body_weight)) * 22
         line_bot_api.reply_message(event.reply_token, TextMessage(text='Your BMR is {0}'.format(simple_bmr)))
         return
 
