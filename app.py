@@ -11,6 +11,7 @@ from linebot.exceptions import (
 )
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
+    ConfirmTemplate ,TemplateSendMessage
 )
 
 app = Flask(__name__)
@@ -48,12 +49,34 @@ def callback():
 
     return 'OK'
 
+def print_help(event):
+    help = """Usage():
+    @bot help
+    @bot bmr
+    @bot tdee
+    """
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=help))
+
 @handler.add(MessageEvent, message=TextMessage)
-def handle_message(event):
+def handle_text_message(event):
     text = event.message.text
-    line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=text))
+
+    if text.lower() == '@bot help':
+        print_help(event)
+        return
+
+    if text.lower() == '@bot bmr':
+        # get weight
+        line_bot_api.reply_message(event.reply_token, TextMessage(text='Please input your weight (kg)'))
+
+        # get % fat if available
+
+        # unknown % fat, bmr = body weight * 22
+
+        # valid % fat, bmr = 500 + (22 * lean body mass) , lean body mass = (1 - %fat) * body weight
+
+    else:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=text))
     
 
 if __name__ == "__main__":
