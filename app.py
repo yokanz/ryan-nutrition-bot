@@ -67,13 +67,14 @@ def handle_text_message(event):
 
     if text.lower() == '@bot bmr':
         # get weight
-        line_bot_api.reply_message(event.reply_token, TextMessage(text='Please input your weight (kg)'))
-
-        # get % fat if available
-
-        # unknown % fat, bmr = body weight * 22
-
-        # valid % fat, bmr = 500 + (22 * lean body mass) , lean body mass = (1 - %fat) * body weight
+        line_bot_api.reply_message(event.reply_token, TextMessage(text='Input your weight in this format: xx=>bmr'))
+        return
+    
+    if '=>bmr' in text.lower():
+        body_weight = text.lower().split('=')[0]
+        simple_bmr = body_weight * 22
+        line_bot_api.reply_message(event.reply_token, TextMessage(text='Your BMR is {0}'.format(simple_bmr)))
+        return
 
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=text))
