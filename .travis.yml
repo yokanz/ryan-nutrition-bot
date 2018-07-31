@@ -1,6 +1,6 @@
 language: python
 python:
-- 3.6.5
+- 3.6
 install:
 - pip install -r requirements.txt
 script:
@@ -8,8 +8,8 @@ script:
 branches:
   only:
   - master
-  deploy:
-    provider: heroku
-    api_key:
-      secure: UDxXuuaOsEswjgoz4qE98P8bvnSjKUNE8xgCyrrcomD9RrEBSODLMinadXgkUZRNwvF8x8bKI3FRXV/UFr0dR4nI4naYAbPgQY2pOsRveIyH6fDKG4VyigjZ7W+jbFnB7toFihQcrUXycGC7LGK+3g3Lfsi5MFPlKbLhV3on/o7r+aiMoa+a7nj88XmAzeAnaFt4Jk+NaL9T+nggRWHuzf4LRE1KRjMo37oKXmX7PikY/fBPcN8rfVoRBsr6suN8RH7th6xtQZisVk0NxDEW9yvBv3wdLYCEFzCUEX8K9wU7284r49Xi4mPYWUp2H+gczQmE2qPoD/YGPAI+w3gH8exNs8kX0UmRkpYVs35vCO7KFNxkP94k+HGBfDkVZcssrqIWksVGlg0rYCocVX8mt08jyKS4G5My0HMqZHw55fMdBSspxTwZBwBZg4gAwmrRWeMRcMuvebo7gcHIW6UNyBwwYrqY7IB0P5sWnSV/fbGz9VAbpp4ExfU5XZuLYVffnqF7XmIo2VaVsmFCmQC/hCSMoT3+P4O3MJGCgxoqitMlMyNa2ZHxONG+utHw66gBq4+ug/bcFjgUTlAQ4O5DYpvpi7u3pP350Hsadc976vNY/lHhf6LAPbgf2KjEdK8pGA0KkXlcTJz/Db8EksBU2YRUeoXG9IBD44V9q8qo/T0=
-    app: ryan-chatbot
+deploy:
+  provider: heroku
+  api_key:
+    secure: UDxXuuaOsEswjgoz4qE98P8bvnSjKUNE8xgCyrrcomD9RrEBSODLMinadXgkUZRNwvF8x8bKI3FRXV/UFr0dR4nI4naYAbPgQY2pOsRveIyH6fDKG4VyigjZ7W+jbFnB7toFihQcrUXycGC7LGK+3g3Lfsi5MFPlKbLhV3on/o7r+aiMoa+a7nj88XmAzeAnaFt4Jk+NaL9T+nggRWHuzf4LRE1KRjMo37oKXmX7PikY/fBPcN8rfVoRBsr6suN8RH7th6xtQZisVk0NxDEW9yvBv3wdLYCEFzCUEX8K9wU7284r49Xi4mPYWUp2H+gczQmE2qPoD/YGPAI+w3gH8exNs8kX0UmRkpYVs35vCO7KFNxkP94k+HGBfDkVZcssrqIWksVGlg0rYCocVX8mt08jyKS4G5My0HMqZHw55fMdBSspxTwZBwBZg4gAwmrRWeMRcMuvebo7gcHIW6UNyBwwYrqY7IB0P5sWnSV/fbGz9VAbpp4ExfU5XZuLYVffnqF7XmIo2VaVsmFCmQC/hCSMoT3+P4O3MJGCgxoqitMlMyNa2ZHxONG+utHw66gBq4+ug/bcFjgUTlAQ4O5DYpvpi7u3pP350Hsadc976vNY/lHhf6LAPbgf2KjEdK8pGA0KkXlcTJz/Db8EksBU2YRUeoXG9IBD44V9q8qo/T0=
+  app: ryan-chatbot
