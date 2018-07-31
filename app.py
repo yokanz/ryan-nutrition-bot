@@ -53,6 +53,7 @@ def print_help(event):
     help = """Usage():
     @bot help
     @bot bmr
+    @bot bmr-cunningham
     @bot tdee
     """
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=help))
@@ -70,10 +71,24 @@ def handle_text_message(event):
         line_bot_api.reply_message(event.reply_token, TextMessage(text='Input your weight in this format: xx=>bmr'))
         return
     
+    if text.lower() == '@bot bmr-cunningham':
+        # get weight and % fat
+        line_bot_api.reply_message(event.reply_token, TextMessage(text='Input your weight and fat percentage in this format: <bw>,<fat>=>cunningham'))
+        return
+    
     if '=>bmr' in text.lower():
         body_weight = text.lower().split('=')[0]
         simple_bmr = int(float(body_weight)) * 22
         line_bot_api.reply_message(event.reply_token, TextMessage(text='Your BMR is {0}'.format(simple_bmr)))
+        return
+
+    if '=>cunningham' in text.lower():
+        input_data = text.lower().split('=')[0]
+        body_weight = int(float(input_data.split(',')[0]))
+        fat_percentage = float(input_data.split(',')[1])/100
+
+        cunningham_bmr = 500 + (22 * ((1-fat_percentage) * body_weight))
+        line_bot_api.reply_message(event.reply_token, TextMessage(text='Your Cunningham BMR is {0}'.format(cunningham_bmr)))
         return
 
     else:
