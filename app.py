@@ -88,7 +88,7 @@ def handle_text_message(event):
         fat_percentage = float(input_data.split(',')[1])/100
 
         cunningham_bmr = 500 + (22 * ((1-fat_percentage) * body_weight))
-        line_bot_api.reply_message(event.reply_token, TextMessage(text='Your Cunningham BMR is {0}'.format(cunningham_bmr)))
+        line_bot_api.reply_message(event.reply_token, TextMessage(text='Your Cunningham BMR is {0:.2f}'.format(cunningham_bmr)))
         return
 
     else:
@@ -96,4 +96,4 @@ def handle_text_message(event):
     
 
 if __name__ == "__main__":
-    app.run(debug=True, use_reloader=True)
+    app.run(debug=True, use_reloader=True, port=5000)
