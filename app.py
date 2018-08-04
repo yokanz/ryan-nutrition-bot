@@ -7,7 +7,7 @@ from linebot import (
     LineBotApi, WebhookHandler
 )
 from linebot.exceptions import (
-    InvalidSignatureError
+    LineBotApiError, InvalidSignatureError
 )
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
@@ -44,6 +44,11 @@ def callback():
     # handle webhook body
     try:
         handler.handle(body, signature)
+    except LineBotApiError as e:
+        print("Got exception from LINE Messaging API: %s\n" % e.message)
+        for m in e.error.details:
+            print("  %s: %s" % (m.property, m.message))
+        print("\n")
     except InvalidSignatureError:
         abort(400)
 
@@ -53,8 +58,7 @@ def print_help(event):
     help = """Usage():
     @bot help
     @bot bmr
-    @bot bmr-cunningham
-    @bot tdee
+    @bot food=<food keyword>
     """
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=help))
 
@@ -68,32 +72,37 @@ def handle_text_message(event):
 
     if text.lower() == '@bot bmr':
         # get weight
-        line_bot_api.reply_message(event.reply_token, TextMessage(text='Input your weight in this format: xx=>bmr'))
+        text="""Please input your info:
+        Weight (mandatory) and Fat % (Optional)
+        e.g. bw=56,fat=24.6 or bw=56
+        """
+        line_bot_api.reply_message(event.reply_token, TextMessage(text=text))
         return
     
-    if text.lower() == '@bot bmr-cunningham':
-        # get weight and % fat
-        line_bot_api.reply_message(event.reply_token, TextMessage(text='Input your weight and fat percentage in this format: <bw>,<fat>=>cunningham'))
+    if 'bw=' in text.lower() and ',' not in text.lower():
+        # validate input
+        weight_input = text.lower().split('=')[1]
+        try:
+            body_weight = float(weight_input)
+            simple_bmr = int(body_weight) * 22
+            line_bot_api.reply_message(event.reply_token, TextMessage(text='Your simple BMR is {0}'.format(simple_bmr)))
+        except ValueError:
+            print("Input is not numeric!!")
+            line_bot_api.reply_message(event.reply_token, TextMessage(text='Input is not numeric!!'))
+        
         return
-    
-    if '=>bmr' in text.lower():
-        body_weight = text.lower().split('=')[0]
-        simple_bmr = int(float(body_weight)) * 22
-        line_bot_api.reply_message(event.reply_token, TextMessage(text='Your BMR is {0}'.format(simple_bmr)))
-        return
-
-    if '=>cunningham' in text.lower():
-        input_data = text.lower().split('=')[0]
-        body_weight = int(float(input_data.split(',')[0]))
-        fat_percentage = float(input_data.split(',')[1])/100
+        
+    if 'bw=' in text.lower() and ',fat=' in text.lower():
+        # validate order and input
+        info_input = text.lower().split(',')
+        body_weight = int(float(info_input[0].split('=')[1]))
+        fat_percentage = float(info_input[1].split('=')[1])/100
+        print('body weight: {0}, fat ratio: {1:.2f}'.format(body_weight,fat_percentage))
 
         cunningham_bmr = 500 + (22 * ((1-fat_percentage) * body_weight))
         line_bot_api.reply_message(event.reply_token, TextMessage(text='Your Cunningham BMR is {0:.2f}'.format(cunningham_bmr)))
         return
 
-    else:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=text))
-    
 
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=True, port=5000)
